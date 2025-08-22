@@ -1,3 +1,127 @@
-body{
-  text-align: center;
+body {
+  overflow-x: hidden !important;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.scroll-to-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 50%;
+  z-index: 1;
+}
+.userpic {
+  width: 30px;
+  height: 30px;
+}
+.card-img {
+  max-height: 300px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold !important;
+}
+@media (max-width: 480px) {
+  h1,
+  h2,
+  h3 {
+    text-align: center;
+  }
+  .scroll-to-top {
+    right: 1rem;
+  }
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+}
+.card-image {
+  max-height: 200px;
+}
+.active {
+  color: orangered;
+  font-weight: bold;
+}
+#animateimg,
+#animateimg2 {
+  animation: 2s ease-in-out infinite alternate-reverse both up-down;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+#animate,
+#animateimg:hover {
+  animation: 30s linear infinite animate;
+}
+#animate2,
+#animateimg2:hover {
+  animation: 30s linear infinite animate2;
+}
+@keyframes animate {
+  0% {
+    transform: perspective(1000px) rotateY(0);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(-370deg);
+  }
+}
+@keyframes up-down {
+  0% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes animate2 {
+  0% {
+    transform: perspective(1000px) rotateY(0);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(370deg);
+  }
+}
+@keyframes type {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}
+/* New class for always up-down animation */
+#animateupdown {
+  animation: 2s ease-in-out infinite alternate-reverse both up-down;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+
+/* On hover → stop animation */
+#animateupdown:hover {
+  animation-play-state: paused;
 }
