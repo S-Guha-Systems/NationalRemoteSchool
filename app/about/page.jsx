@@ -4,12 +4,30 @@ import about from "@/img/about.webp";
 import mission from "@/img/mission.webp";
 import vission from "@/img/vission.webp";
 import future from "@/img/future.webp";
+import SimpleCard from "@/components/SimpleCard";
+import { Grid, Typography } from "@mui/material";
 
 export const metadata = {
   title: "About",
   description: "Learn more about National Remote School",
 };
-
+const studentStories = [
+  {
+    name: "Aarav, Class 8",
+    story:
+      "Before joining National Remote School, I struggled to access quality education in my village. Now I can attend live classes, ask doubts, and study without worrying about fees.",
+  },
+  {
+    name: "Meera, Class 10",
+    story:
+      "The free resources and notes have helped me prepare for my board exams with confidence. I also love that I can learn in my regional language.",
+  },
+  {
+    name: "Rohit, Class 12",
+    story:
+      "I dream of becoming an engineer. Thanks to National Remote School, I get guidance and mentorship that motivates me every day to achieve my goals.",
+  },
+];
 const About = () => {
   return (
     <>
@@ -41,6 +59,18 @@ const About = () => {
         }
         imageUrl={future}
       />
+      {/* Student Stories Section */}
+      <Typography variant="h2" sx={{ mt: 8, mb: 4, textAlign: "center" }}>
+        Student Stories
+      </Typography>
+
+      <Grid container spacing={4}>
+        {studentStories.map((student, index) => (
+          <Grid size={{ xs: 12, md: 4 }} key={index}>
+            <SimpleCard title={student.name} description={student.story} />
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 };

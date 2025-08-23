@@ -1,7 +1,6 @@
 import LeftAlignedContentModel from "@/components/LeftAlignedContentModel";
 import { Box, Grid, Typography } from "@mui/material";
 import GlobalCard from "@/components/GlobalCard";
-
 import features from "@/img/features.webp";
 import smart from "@/img/smart.webp";
 import real from "@/img/real.webp";
