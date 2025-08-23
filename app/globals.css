@@ -1,7 +1,7 @@
+/* Global Css */
 body {
   overflow-x: hidden !important;
 }
-
 .logo {
   width: 30px;
   height: 30px;
@@ -13,31 +13,17 @@ body {
   right: 50%;
   z-index: 1;
 }
+.menu-logo {
+  max-width: 30px;
+  margin-right: 5px;
+  margin-top: -1px;
+}
 .userpic {
   width: 30px;
   height: 30px;
 }
 .card-img {
   max-height: 300px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: bold !important;
-}
-@media (max-width: 480px) {
-  h1,
-  h2,
-  h3 {
-    text-align: center;
-  }
-  .scroll-to-top {
-    right: 1rem;
-  }
 }
 a {
   text-decoration: none;
@@ -55,6 +41,30 @@ img {
   color: orangered;
   font-weight: bold;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold !important;
+}
+/* Mobile Screen CSS */
+@media (max-width: 992px) {
+  h1,
+  h2,
+  h3 {
+    text-align: center;
+  }
+  .scroll-to-top {
+    right: 1rem;
+  }
+  .menu-logo {
+    max-width: 28px;
+    margin-top: -5px;
+  }
+}
+/* Animation CSS */
 #animateimg,
 #animateimg2 {
   animation: 2s ease-in-out infinite alternate-reverse both up-down;

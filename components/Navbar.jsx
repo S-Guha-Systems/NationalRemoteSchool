@@ -19,6 +19,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Button, Fab, Fade, useScrollTrigger } from "@mui/material";
 import { signInUser, signOutUser } from "@/lib/Backend";
 import { Google } from "@mui/icons-material";
+import Image from "next/image";
+import icon from "@/img/icon.png";
+
 const pages = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
@@ -129,8 +132,17 @@ const Navbar = () => {
               fontWeight: 700,
               color: "inherit",
               textDecoration: "none",
+              mt: 0.8,
             }}
           >
+            <Image
+              src={icon}
+              alt="Logo"
+              className="menu-logo"
+              height={500}
+              width={500}
+              placeholder="blur"
+            />
             National Remote School
           </Typography>
 
@@ -190,9 +202,18 @@ const Navbar = () => {
               fontWeight: 700,
               color: "inherit",
               textDecoration: "none",
+              mt: 0.8,
             }}
           >
-            Remote School
+            <Image
+              src={icon}
+              alt="Logo"
+              className="menu-logo"
+              height={500}
+              width={500}
+              placeholder="blur"
+            />
+            N.R.S
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -254,7 +275,7 @@ const Navbar = () => {
               <>
                 <Tooltip title="Account">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Learner" src="/logo.png" />
+                    <Avatar alt="Learner" src="/user.webp" />
                   </IconButton>
                 </Tooltip>
                 <Menu

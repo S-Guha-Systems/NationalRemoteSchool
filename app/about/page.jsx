@@ -66,10 +66,15 @@ const About = () => {
 
       <Grid container spacing={4}>
         {studentStories.map((student, index) => (
-          <Grid size={{ xs: 12, md: 4 }} key={index}>
+          <Grid size={{ xs: 12, md: 3 }} key={index}>
             <SimpleCard title={student.name} description={student.story} />
           </Grid>
         ))}
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Typography variant="subtitle1" sx={{ mt: 2, textAlign: "center" }}>
+            ...and many more success stories from our students.
+          </Typography>
+        </Grid>
       </Grid>
     </>
   );

@@ -2,7 +2,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 
 const SimpleCard = ({ title, description }) => {
   return (
-    <Card>
+    <Card sx={{ cursor: "pointer" }}>
       <CardContent sx={{ height: "100%" }}>
         <Typography variant="h5" component="div">
           {title}
