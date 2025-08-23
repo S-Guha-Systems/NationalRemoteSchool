@@ -7,6 +7,15 @@ body {
   height: 30px;
   border-radius: 50%;
 }
+/* .footer{
+  background-color: #f8f8f8;
+  padding: 2rem 0;
+} */
+.counter {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
 .scroll-to-top {
   position: fixed;
   bottom: 1.5rem;

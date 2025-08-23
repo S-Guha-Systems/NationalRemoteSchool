@@ -11,7 +11,7 @@ const Contact = () => {
       <LeftAlignedContentModel
         title={"Get in Touch"}
         body={
-          "We’d love to hear from you! Whether you have questions, feedback, or just want to say hello, our team is here to help you every step of the way. Just drop us an email at support@sguhasystems.com — we’ll be happy to assist you."
+          "We’d love to hear from you! Whether you have questions, feedback, or just want to say hello, our team is here to help you every step of the way. Just drop us an email at nationalremoteschool@gmail.com — we’ll be happy to assist you."
         }
         imageUrl={contact}
       />
