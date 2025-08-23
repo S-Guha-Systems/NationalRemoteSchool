@@ -29,7 +29,7 @@ const Footer = () => {
         </Typography>
         <Typography
           variant="body2"
-          sx={{ textAlign: "justify", maxWidth: "300px", mt: 1 }}
+          sx={{ maxWidth: "300px", mt: 1 }}
           color="text.secondary"
         >
           National Remote School is an NGO initiative dedicated to providing
