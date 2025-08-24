@@ -1,8 +1,6 @@
-import Counter from "@/components/Counter";
 import InstallApp from "@/components/InstallApp";
 import LeftAlignedContentModel from "@/components/LeftAlignedContentModel";
 import logo from "@/img/logo.webp";
-import { Typography } from "@mui/material";
 const Home = () => {
   return (
     <>
