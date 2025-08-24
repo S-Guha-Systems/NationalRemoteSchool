@@ -1,5 +1,7 @@
 # National Remote School 🌐📚
 
+National Remote School is an NGO initiative dedicated to providing completely free online education up to 12th class by [Soumwadeep Guha](https://www.linkedin.com/in/soumwadeepguha/) and [Shreshtha Das](https://www.linkedin.com/in/shreshtha-das-538477379/). We believe that every child deserves access to quality education, regardless of financial background or geographical barriers. Through innovative online tools and inclusive resources, we strive to make learning accessible to all.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).  
 It powers the **National Remote School** initiative – providing **free online education up to 12th class** for children in need.
 

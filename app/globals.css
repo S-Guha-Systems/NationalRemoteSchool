@@ -2,6 +2,9 @@
 body {
   overflow-x: hidden !important;
 }
+/* .terms {
+  text-align: justify !important;
+} */
 .logo {
   width: 30px;
   height: 30px;

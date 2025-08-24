@@ -60,7 +60,7 @@ const Footer = () => {
             <Typography variant="body2">Privacy Policy</Typography>
           </Link>
           <Link href="/terms">
-            <Typography variant="body2">Terms & Conditions</Typography>
+            <Typography variant="body2">Terms Of Use</Typography>
           </Link>
         </Box>
       </Grid>
