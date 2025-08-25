@@ -1,6 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth, db } from "./FirebaseConfig";
+import { auth, db, storage } from "./FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, list, ref } from "firebase/storage";
 const provider = new GoogleAuthProvider();
 
 // Sign In
@@ -49,6 +50,36 @@ export async function signOutUser() {
     return { data: "Signed Out Successfully" };
   } catch (error) {
     console.error("Error signing out:", error);
+    return { error: error.message };
+  }
+}
+
+// Fetch Single Book
+export async function fetchSingleBook(bookName) {
+  try {
+    const listRef = ref(storage, `BOOKS/${bookName}`);
+    const firstPage = await list(listRef, { maxResults: 100 });
+
+    let allItems = [...firstPage.items];
+
+    if (firstPage.nextPageToken) {
+      const secondPage = await list(listRef, {
+        maxResults: 100,
+        pageToken: firstPage.nextPageToken,
+      });
+      allItems = [...allItems, ...secondPage.items];
+    }
+
+    // Get download URLs for each file
+    const files = await Promise.all(
+      allItems.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        return { name: itemRef.name, url };
+      })
+    );
+
+    return { data: files };
+  } catch (error) {
     return { error: error.message };
   }
 }
