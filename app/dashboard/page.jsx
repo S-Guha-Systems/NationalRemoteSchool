@@ -1,6 +1,6 @@
 import LeftAlignedContentModel from "@/components/LeftAlignedContentModel";
 import dashboard from "@/img/dashboard.webp";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 
 export const metadata = {
   title: "Dashboard - National Remote School",

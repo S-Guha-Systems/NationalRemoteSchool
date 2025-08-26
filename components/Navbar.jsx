@@ -92,6 +92,7 @@ const Navbar = () => {
       localStorage.setItem("userPic", data.photoURL);
       localStorage.setItem("userName", data.displayName);
       localStorage.setItem("userEmail", data.email);
+      redirect("/dashboard");
     }
   };
   const handleSignOut = async () => {
