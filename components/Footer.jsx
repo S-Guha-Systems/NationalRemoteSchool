@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Facebook,
   Instagram,
@@ -9,12 +11,19 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/img/icon.png";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+  const pathname = usePathname() || "/";
+  const isDashboard = pathname.startsWith("/dashboard");
   const startYear = 2025;
   const currentYear = new Date().getFullYear();
   const yearDisplay =
     currentYear === startYear ? `${startYear}` : `${startYear}–${currentYear}`;
+  if (isDashboard) {
+    // render dashboard navbar immediately with no flash
+    return null;
+  }
   return (
     <Grid container spacing={3} sx={{ mt: 3, p: 2 }}>
       <Divider sx={{ width: "100%" }} />

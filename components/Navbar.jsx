@@ -21,6 +21,7 @@ import { signInUser, signOutUser } from "@/lib/Backend";
 import { Google } from "@mui/icons-material";
 import Image from "next/image";
 import icon from "@/img/icon.png";
+import DashboardNavbar from "./DashboardNavbar";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -30,7 +31,8 @@ const pages = [
 ];
 
 const Navbar = () => {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/";
+  const isDashboard = pathname.startsWith("/dashboard");
   const [user, setUser] = React.useState("");
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -116,6 +118,11 @@ const Navbar = () => {
       });
     }
   }, []);
+  if (isDashboard) {
+    // render dashboard navbar immediately with no flash
+    return <DashboardNavbar />;
+  }
+
   return (
     <AppBar position="static" sx={{ borderRadius: "2rem", mb: "1rem" }}>
       <Container maxWidth="xl">
