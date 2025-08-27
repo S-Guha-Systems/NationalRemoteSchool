@@ -56,11 +56,10 @@ export async function signOutUser() {
 }
 
 // Fetch Single Book
-export async function fetchSingleBook(bookName) {
+export async function fetchSingleBook(userClass,subject) {
   try {
-    const listRef = ref(storage, `BOOKS/${bookName}`);
+    const listRef = ref(storage, `BOOKS/${userClass}/${subject}`);
     const firstPage = await list(listRef, { maxResults: 100 });
-
     let allItems = [...firstPage.items];
 
     if (firstPage.nextPageToken) {

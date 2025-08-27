@@ -8,13 +8,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import {
-  Home,
-  MenuBook,
-  Assignment,
-  Person,
-  Laptop,
-} from "@mui/icons-material";
+import { Home, MenuBook, Assignment, Person } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { getUserById, signOutUser } from "@/lib/Backend";
 import ScrollTop from "./ScrollToTop";
@@ -36,7 +30,6 @@ const DashboardNavbar = () => {
   });
 
   useEffect(() => {
-    setDbUrl(localStorage.getItem("userDbUrl") || "");
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
       if (userId) {
@@ -46,6 +39,11 @@ const DashboardNavbar = () => {
           localStorage.setItem("userId", userId);
           localStorage.setItem("userClass", data.class || "");
           localStorage.setItem("userRole", data.role || "student");
+          localStorage.setItem(
+            "userDbUrl",
+            `/dashboard/${data.role}/CLASS-${data.class}`
+          );
+          setDbUrl(`/dashboard/${data.role}/CLASS-${data.class}`);
           setSnackbar({
             open: true,
             message: `Welcome back, ${data.name || "User"}! 🎉`,

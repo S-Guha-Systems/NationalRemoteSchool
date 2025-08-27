@@ -45,7 +45,7 @@ export default function Dashboard() {
           <UserDataForm />
         </Box>
       ) : (
-        <Link href={`/dashboard/${userRole}/${userClass}`}>
+        <Link href={`/dashboard/${userRole}/CLASS-${userClass}`}>
           <Button variant="contained" color="success">
             Go To Your Personalized Dashboard
           </Button>

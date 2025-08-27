@@ -47,13 +47,13 @@ const UserDataUpdateForm = () => {
           console.error("Error updating user data:", error);
           setMessage("❌ Failed to update user data");
         } else {
-          console.log("User data updated successfully");
+          // console.log("User data updated successfully");
           setMessage("✅ User data updated successfully");
           localStorage.setItem(
             "userDbUrl",
-            `/dashboard/${role}/${userData.class}`
+            `/dashboard/${role}/CLASS-${userData.class}`
           );
-          router.push(`/dashboard/${role}/${userData.class}`);
+          router.push(`/dashboard/${role}/CLASS-${userData.class}`);
         }
       } else {
         console.error("No user ID found in local storage");
