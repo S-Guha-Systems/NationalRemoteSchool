@@ -1,27 +1,33 @@
 "use client";
 
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import { redirect, usePathname } from "next/navigation";
 import Link from "next/link";
-import ThemeTogglerBtn from "./ThemeTogglerBtn";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Button, Fab, Fade, useScrollTrigger } from "@mui/material";
-import { signInUser, signOutUser } from "@/lib/Backend";
-import { Google } from "@mui/icons-material";
 import Image from "next/image";
-import icon from "@/img/icon.png";
+import { redirect, usePathname } from "next/navigation";
+// MUI imports (all in one)
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Tooltip,
+  MenuItem,
+  Button,
+} from "@mui/material";
+
+// Icons
+import { Menu as MenuIcon, Google } from "@mui/icons-material";
+
+// Local imports
+import ThemeTogglerBtn from "./ThemeTogglerBtn";
 import DashboardNavbar from "./DashboardNavbar";
+import ScrollTop from "./ScrollToTop";
+import { signInUser, signOutUser } from "@/lib/Backend";
+import icon from "@/img/icon.png";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -51,31 +57,6 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  function ScrollTop() {
-    const trigger = useScrollTrigger({
-      disableHysteresis: true,
-      threshold: 100,
-    });
-
-    const handleClick = () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    return (
-      <Fade in={trigger}>
-        <Box
-          onClick={handleClick}
-          role="presentation"
-          className="scroll-to-top"
-        >
-          <Fab size="medium" aria-label="scroll back to top" color="warning">
-            <KeyboardArrowUpIcon />
-          </Fab>
-        </Box>
-      </Fade>
-    );
-  }
-
   const handleSignIn = async () => {
     const { data, error } = await signInUser();
     if (error) {

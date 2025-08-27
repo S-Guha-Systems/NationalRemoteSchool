@@ -22,7 +22,15 @@ const Footer = () => {
     currentYear === startYear ? `${startYear}` : `${startYear}–${currentYear}`;
   if (isDashboard) {
     // render dashboard navbar immediately with no flash
-    return null;
+    return (
+      <Grid size={{ xs: 12 }} sx={{ textAlign: "center", mt: "1rem" }}>
+        <Link href="#">
+          <Typography variant="subtitle1">
+            © {yearDisplay} National Remote School. All Rights Reserved.
+          </Typography>
+        </Link>
+      </Grid>
+    );
   }
   return (
     <Grid container spacing={3} sx={{ mt: 3, p: 2 }}>

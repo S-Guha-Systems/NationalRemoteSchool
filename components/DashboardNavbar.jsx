@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   BottomNavigation,
   BottomNavigationAction,
-  Paper,
   Box,
   Snackbar,
   Alert,
@@ -18,7 +17,7 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { getUserById, signOutUser } from "@/lib/Backend";
-import { useRouter } from "next/navigation";
+import ScrollTop from "./ScrollToTop";
 
 const navItems = [
   { label: "Dashboard", icon: <Laptop />, href: "/dashboard" },
@@ -29,7 +28,6 @@ const navItems = [
 ];
 
 const DashboardNavbar = () => {
-  const router = useRouter();
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -42,17 +40,14 @@ const DashboardNavbar = () => {
       if (userId) {
         const { data } = await getUserById(userId);
         if (data) {
-          console.log("User data:", data);
+          // console.log("User data:", data);
           localStorage.setItem("userId", userId);
-          localStorage.setItem("userName", data.name);
-          localStorage.setItem("userEmail", data.email);
-          localStorage.setItem("userPic", data.photoURL);
-          localStorage.setItem("userRole", data.role || "student");
           localStorage.setItem("userClass", data.class || "");
-          localStorage.setItem("userFatherName", data.fatherName || "");
-          localStorage.setItem("userMotherName", data.motherName || "");
-          localStorage.setItem("userGuardianName", data.guardianName || "");
-          localStorage.setItem("userAddress", data.address || "");
+          localStorage.setItem("userRole", data.role || "student");
+          // localStorage.setItem(
+          //   "userBaseUrl",
+          //   `/dashboard/${data?.role || "student"}`
+          // );
           setSnackbar({
             open: true,
             message: `Welcome back, ${data.name || "User"}! 🎉`,
@@ -89,7 +84,7 @@ const DashboardNavbar = () => {
   };
 
   return (
-    <Box>
+    <Box position="static" sx={{ mb: "1rem" }}>
       {/* Snackbar with Alert */}
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -108,47 +103,37 @@ const DashboardNavbar = () => {
       </Snackbar>
 
       {/* Bottom Nav */}
-      <Paper
+      <Box
         sx={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
+          display: "flex",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          "&::-webkit-scrollbar": { display: "none" },
         }}
-        elevation={3}
       >
-        <Box
+        <BottomNavigation
+          showLabels
           sx={{
+            flex: "1 0 auto",
             display: "flex",
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            "&::-webkit-scrollbar": { display: "none" },
           }}
         >
-          <BottomNavigation
-            showLabels
-            sx={{
-              flex: "1 0 auto",
-              display: "flex",
-            }}
-          >
-            {navItems.map((item) => (
-              <BottomNavigationAction
-                key={item.label}
-                label={item.label}
-                icon={item.icon}
-                component={Link}
-                href={item.href}
-                sx={{
-                  minWidth: "80px",
-                  flex: "0 0 auto",
-                }}
-              />
-            ))}
-          </BottomNavigation>
-        </Box>
-      </Paper>
+          {navItems.map((item) => (
+            <BottomNavigationAction
+              key={item.label}
+              label={item.label}
+              icon={item.icon}
+              component={Link}
+              href={item.href}
+              sx={{
+                minWidth: "80px",
+                flex: "0 0 auto",
+              }}
+            />
+          ))}
+        </BottomNavigation>
+      </Box>
+      <ScrollTop />
     </Box>
   );
 };
