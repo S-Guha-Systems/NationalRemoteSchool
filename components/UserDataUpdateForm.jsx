@@ -3,7 +3,7 @@
 import { updateUserData } from "@/lib/Backend";
 import { Check } from "@mui/icons-material";
 import { Alert, Button, Box, TextField } from "@mui/material";
-import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const UserDataUpdateForm = () => {
@@ -23,6 +23,7 @@ const UserDataUpdateForm = () => {
   });
 
   const [updating, setUpdating] = useState(false);
+  const router = useRouter();
   const [message, setMessage] = useState("");
   const [role, setRole] = useState("");
   useEffect(() => {
@@ -52,7 +53,7 @@ const UserDataUpdateForm = () => {
             "userDbUrl",
             `/dashboard/${role}/${userData.class}`
           );
-          redirect(`/dashboard/${role}/${userData.class}`);
+          router.push(`/dashboard/${role}/${userData.class}`);
         }
       } else {
         console.error("No user ID found in local storage");

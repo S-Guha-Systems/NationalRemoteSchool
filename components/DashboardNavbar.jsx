@@ -20,14 +20,15 @@ import { getUserById, signOutUser } from "@/lib/Backend";
 import ScrollTop from "./ScrollToTop";
 
 const navItems = [
-  { label: "Dashboard", icon: <Laptop />, href: "/dashboard" },
-  { label: "Books", icon: <MenuBook />, href: "#" },
-  { label: "Exam", icon: <Assignment />, href: "#" },
-  { label: "Profile", icon: <Person />, href: "#" },
+  // { label: "Dashboard", icon: <Laptop />, href: "/dashboard" },
   { label: "Home", icon: <Home />, href: "/" },
+  { label: "Books", icon: <MenuBook />, href: "/books" },
+  { label: "Exam", icon: <Assignment />, href: "/exam" },
+  { label: "Profile", icon: <Person />, href: "/profile" },
 ];
 
 const DashboardNavbar = () => {
+  const [dbUrl, setDbUrl] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -35,6 +36,7 @@ const DashboardNavbar = () => {
   });
 
   useEffect(() => {
+    setDbUrl(localStorage.getItem("userDbUrl") || "");
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
       if (userId) {
@@ -44,10 +46,6 @@ const DashboardNavbar = () => {
           localStorage.setItem("userId", userId);
           localStorage.setItem("userClass", data.class || "");
           localStorage.setItem("userRole", data.role || "student");
-          // localStorage.setItem(
-          //   "userBaseUrl",
-          //   `/dashboard/${data?.role || "student"}`
-          // );
           setSnackbar({
             open: true,
             message: `Welcome back, ${data.name || "User"}! 🎉`,
@@ -124,7 +122,7 @@ const DashboardNavbar = () => {
               label={item.label}
               icon={item.icon}
               component={Link}
-              href={item.href}
+              href={`${dbUrl}${item.href}`}
               sx={{
                 minWidth: "80px",
                 flex: "0 0 auto",
