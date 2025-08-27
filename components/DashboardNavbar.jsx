@@ -14,7 +14,6 @@ import { getUserById, signOutUser } from "@/lib/Backend";
 import ScrollTop from "./ScrollToTop";
 
 const navItems = [
-  // { label: "Dashboard", icon: <Laptop />, href: "/dashboard" },
   { label: "Home", icon: <Home />, href: "/" },
   { label: "Books", icon: <MenuBook />, href: "/books" },
   { label: "Exam", icon: <Assignment />, href: "/exam" },
@@ -32,10 +31,34 @@ const DashboardNavbar = () => {
   useEffect(() => {
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
+
+      // If offline, just trust localStorage
+      if (!navigator.onLine) {
+        if (userId) {
+          const userRole = localStorage.getItem("userRole") || "student";
+          const userClass = localStorage.getItem("userClass") || "";
+          setDbUrl(`/dashboard/${userRole}/CLASS-${userClass}`);
+          setSnackbar({
+            open: true,
+            message: "You are offline. Using saved data ⚡",
+            severity: "warning",
+          });
+          return;
+        } else {
+          setSnackbar({
+            open: true,
+            message: "No account found. Please sign in again 🥺",
+            severity: "error",
+          });
+          setTimeout(() => window.location.replace("/"), 2000);
+          return;
+        }
+      }
+
+      // If online, validate from backend
       if (userId) {
         const { data } = await getUserById(userId);
         if (data) {
-          // console.log("User data:", data);
           localStorage.setItem("userId", userId);
           localStorage.setItem("userClass", data.class || "");
           localStorage.setItem("userRole", data.role || "student");
@@ -52,8 +75,7 @@ const DashboardNavbar = () => {
         } else {
           setSnackbar({
             open: true,
-            message:
-              "We couldn’t verify your account.Please try to sign in again 🥺",
+            message: "We couldn’t verify your account. Please sign in again 🥺",
             severity: "error",
           });
           await signOutUser();
@@ -62,8 +84,7 @@ const DashboardNavbar = () => {
       } else {
         setSnackbar({
           open: true,
-          message:
-            "We couldn’t verify your account.Please try to sign in again 🥺",
+          message: "We couldn’t verify your account. Please sign in again 🥺",
           severity: "error",
         });
         await signOutUser();
