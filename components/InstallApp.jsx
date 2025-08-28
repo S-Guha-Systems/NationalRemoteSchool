@@ -60,16 +60,15 @@ const InstallApp = () => {
   if (!showInstallButton) return null;
 
   return (
-    <center>
-      <Button
-        variant="outlined"
-        onClick={handleInstall}
-        color="warning"
-        size="small"
-      >
-        Download App
-      </Button>
-    </center>
+    <Button
+      variant="outlined"
+      onClick={handleInstall}
+      color="warning"
+      size="small"
+      sx={{ mt: 1 }}
+    >
+      Download App
+    </Button>
   );
 };
 

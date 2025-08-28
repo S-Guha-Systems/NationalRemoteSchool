@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "@/img/icon.png";
 import { usePathname } from "next/navigation";
+import InstallApp from "./InstallApp";
 
 const Footer = () => {
   const pathname = usePathname() || "/";
@@ -52,6 +53,7 @@ const Footer = () => {
           National Remote School is an NGO initiative dedicated to providing
           completely free online education up to 12th class.
         </Typography>
+        <InstallApp />
       </Grid>
       <Grid size={{ xs: 6, md: 3 }}>
         <Typography variant="h6">Quick Links</Typography>

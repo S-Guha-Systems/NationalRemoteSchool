@@ -26,9 +26,9 @@ import { Menu as MenuIcon, Google } from "@mui/icons-material";
 import ThemeTogglerBtn from "./ThemeTogglerBtn";
 import DashboardNavbar from "./DashboardNavbar";
 import ScrollTop from "./ScrollToTop";
-import { signInUser, signOutUser } from "@/lib/Backend";
+import { signInUser } from "@/lib/Backend";
 import icon from "@/img/icon.png";
-import InstallApp from "./InstallApp";
+import SignOutButton from "./SignOutButton";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -75,15 +75,6 @@ const Navbar = () => {
       localStorage.setItem("userName", data.displayName);
       localStorage.setItem("userEmail", data.email);
       redirect("/dashboard");
-    }
-  };
-  const handleSignOut = async () => {
-    const { error } = await signOutUser();
-    if (error) {
-      console.error("Sign out error:", error);
-    } else {
-      setUser(null);
-      redirect("/");
     }
   };
   React.useEffect(() => {
@@ -135,7 +126,6 @@ const Navbar = () => {
             />
             National Remote School
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -255,12 +245,7 @@ const Navbar = () => {
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography color="error" onClick={handleSignOut}>
-                      Sign Out
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <InstallApp />
+                    <SignOutButton />
                   </MenuItem>
                 </Menu>
               </>
@@ -298,9 +283,6 @@ const Navbar = () => {
                       <Google />
                       &nbsp;Sign In/Up With Google
                     </Button>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <InstallApp />
                   </MenuItem>
                 </Menu>
               </>
