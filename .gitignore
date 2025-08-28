@@ -44,3 +44,4 @@ workbox*
 sw.js
 fallback-development.js
 swe-worker-development.js
+certificates

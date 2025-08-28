@@ -28,6 +28,7 @@ import DashboardNavbar from "./DashboardNavbar";
 import ScrollTop from "./ScrollToTop";
 import { signInUser, signOutUser } from "@/lib/Backend";
 import icon from "@/img/icon.png";
+import InstallApp from "./InstallApp";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -258,6 +259,9 @@ const Navbar = () => {
                       Sign Out
                     </Typography>
                   </MenuItem>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <InstallApp />
+                  </MenuItem>
                 </Menu>
               </>
             ) : (
@@ -294,6 +298,9 @@ const Navbar = () => {
                       <Google />
                       &nbsp;Sign In/Up With Google
                     </Button>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <InstallApp />
                   </MenuItem>
                 </Menu>
               </>

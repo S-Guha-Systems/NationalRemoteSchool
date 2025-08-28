@@ -20,7 +20,7 @@ export const metadata = {
   },
   description:
     "National Remote School is an NGO initiative that provides completely free online education up to 12th class. Our mission is to support children in need by ensuring equal access to quality learning resources — anytime, anywhere.",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
