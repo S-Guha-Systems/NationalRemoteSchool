@@ -59,7 +59,7 @@ export async function signOutUser() {
 export async function fetchSingleBook(userClass, subject) {
   try {
     const fileName = `${subject}.pdf`; // Example: English → English.pdf
-    const url = `/Books/${userClass}/${fileName}`;
+    const url = `/BOOKS/${userClass}/${fileName}`;
 
     return {
       data: [
