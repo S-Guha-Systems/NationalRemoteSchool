@@ -21,7 +21,7 @@ export default async function SingleBook({ params }) {
       <Grid container spacing={2}>
         {books.data.map((book, index) => {
           return (
-            <Grid key={index + 1} size={{ xs: 12, sm: 6, md: 4 }}>
+            <Grid key={index + 1} size={{ xs: 12 }}>
               <BookViewer bookName={book.name} bookUrl={book.url} />
               <Box sx={{ mt: 1 }}>
                 <Link href={book.url}>

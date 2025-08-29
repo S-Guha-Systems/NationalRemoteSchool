@@ -55,30 +55,20 @@ export async function signOutUser() {
   }
 }
 
-// Fetch Single Book
-export async function fetchSingleBook(userClass,subject) {
+// Fetch Single Book (from /public folder)
+export async function fetchSingleBook(userClass, subject) {
   try {
-    const listRef = ref(storage, `BOOKS/${userClass}/${subject}`);
-    const firstPage = await list(listRef, { maxResults: 100 });
-    let allItems = [...firstPage.items];
+    const fileName = `${subject}.pdf`; // Example: English → English.pdf
+    const url = `/Books/${userClass}/${fileName}`;
 
-    if (firstPage.nextPageToken) {
-      const secondPage = await list(listRef, {
-        maxResults: 100,
-        pageToken: firstPage.nextPageToken,
-      });
-      allItems = [...allItems, ...secondPage.items];
-    }
-
-    // Get download URLs for each file
-    const files = await Promise.all(
-      allItems.map(async (itemRef) => {
-        const url = await getDownloadURL(itemRef);
-        return { name: itemRef.name, url };
-      })
-    );
-
-    return { data: files };
+    return {
+      data: [
+        {
+          name: fileName,
+          url,
+        },
+      ],
+    };
   } catch (error) {
     return { error: error.message };
   }
