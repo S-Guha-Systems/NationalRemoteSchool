@@ -49,6 +49,7 @@ const UserDataUpdateForm = () => {
         } else {
           // console.log("User data updated successfully");
           setMessage("✅ User data updated successfully");
+          localStorage.setItem("userClass", userData.class);
           localStorage.setItem(
             "userDbUrl",
             `/dashboard/${role}/CLASS-${userData.class}`

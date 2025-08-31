@@ -1,7 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth, db, storage } from "./FirebaseConfig";
+import { auth, db } from "./FirebaseConfig";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { getDownloadURL, list, ref } from "firebase/storage";
 const provider = new GoogleAuthProvider();
 
 // Sign In
@@ -9,7 +8,7 @@ export async function signInUser() {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    const checkUser = await getUserById(user.uid);
+    let checkUser = await getUserById(user.uid);
     if (!checkUser.data) {
       await setDoc(doc(db, "users", user.uid), {
         name: user.displayName,
@@ -18,8 +17,12 @@ export async function signInUser() {
         role: "student",
         registeredAt: serverTimestamp(),
       });
+      checkUser = await getUserById(user.uid); // fetch newly created user data
     }
-    return { data: user };
+    // else {
+    //   console.log("User data from backend code:", checkUser.data);
+    // }
+    return { data: checkUser.data };
   } catch (error) {
     return { error: error.message };
   }
@@ -30,8 +33,11 @@ export async function getUserById(userId) {
   try {
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
+
     if (userSnap.exists()) {
-      return { data: userSnap.data() };
+      return {
+        data: { id: userSnap.id, ...userSnap.data() },
+      };
     } else {
       return { data: null };
     }
@@ -48,6 +54,9 @@ export async function signOutUser() {
     localStorage.removeItem("userName");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userPic");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userClass");
+    localStorage.removeItem("userDbUrl");
     return { data: "Signed Out Successfully" };
   } catch (error) {
     console.error("Error signing out:", error);

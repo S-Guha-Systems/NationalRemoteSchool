@@ -65,16 +65,26 @@ const Navbar = () => {
     } else {
       // console.log("Sign in action:", data);
       setUser({
-        uid: data.uid,
-        name: data.displayName,
+        uid: data.id,
+        name: data.name,
         email: data.email,
         photoURL: data.photoURL,
       });
-      localStorage.setItem("userId", data.uid);
+      localStorage.setItem("userId", data.id);
       localStorage.setItem("userPic", data.photoURL);
-      localStorage.setItem("userName", data.displayName);
+      localStorage.setItem("userName", data.name);
       localStorage.setItem("userEmail", data.email);
-      redirect("/dashboard");
+      localStorage.setItem("userRole", data.role);
+      localStorage.setItem("userClass", data.class);
+      localStorage.setItem(
+        "userDbUrl",
+        `/dashboard/${data.role}/CLASS-${data.class}`
+      );
+      if (data?.class) {
+        redirect(`/dashboard/${data.role}/CLASS-${data.class}`);
+      } else {
+        redirect("/dashboard");
+      }
     }
   };
   React.useEffect(() => {

@@ -12,6 +12,8 @@ import { Home, MenuBook, Assignment, Person } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { getUserById, signOutUser } from "@/lib/Backend";
 import ScrollTop from "./ScrollToTop";
+import SignOutButton from "./SignOutButton";
+import ThemeTogglerBtn from "./ThemeTogglerBtn";
 
 const navItems = [
   { label: "Home", icon: <Home />, href: "/" },
@@ -31,13 +33,9 @@ const DashboardNavbar = () => {
   useEffect(() => {
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
-
       // If offline, just trust localStorage
       if (!navigator.onLine) {
         if (userId) {
-          const userRole = localStorage.getItem("userRole") || "student";
-          const userClass = localStorage.getItem("userClass") || "";
-          setDbUrl(`/dashboard/${userRole}/CLASS-${userClass}`);
           setSnackbar({
             open: true,
             message: "You are offline. Using saved data ⚡",
@@ -58,15 +56,8 @@ const DashboardNavbar = () => {
       // If online, validate from backend
       if (userId) {
         const { data } = await getUserById(userId);
+        // console.log("User data from backend:", data);
         if (data) {
-          localStorage.setItem("userId", userId);
-          localStorage.setItem("userClass", data.class || "");
-          localStorage.setItem("userRole", data.role || "student");
-          localStorage.setItem(
-            "userDbUrl",
-            `/dashboard/${data.role}/CLASS-${data.class}`
-          );
-          setDbUrl(`/dashboard/${data.role}/CLASS-${data.class}`);
           setSnackbar({
             open: true,
             message: `Welcome back, ${data.name || "User"}! 🎉`,
@@ -148,6 +139,8 @@ const DashboardNavbar = () => {
               }}
             />
           ))}
+          <ThemeTogglerBtn/>
+          <SignOutButton />
         </BottomNavigation>
       </Box>
       <ScrollTop />
