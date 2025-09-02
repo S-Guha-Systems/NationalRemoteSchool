@@ -32,11 +32,6 @@ const DashboardNavbar = () => {
     severity: "info",
   });
 
-  // Track active tab
-  const activeIndex = navItems.findIndex((item) =>
-    pathname.startsWith(item.href)
-  );
-
   useEffect(() => {
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
@@ -123,11 +118,7 @@ const DashboardNavbar = () => {
           "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        <BottomNavigation
-          showLabels
-          value={activeIndex === -1 ? 0 : activeIndex} // fallback to Home
-          sx={{ flex: "1 0 auto", display: "flex" }}
-        >
+        <BottomNavigation showLabels sx={{ flex: "1 0 auto", display: "flex" }}>
           {navItems.map((item, index) => (
             <BottomNavigationAction
               key={item.label}
@@ -138,10 +129,6 @@ const DashboardNavbar = () => {
               sx={{
                 minWidth: "80px",
                 flex: "0 0 auto",
-                "&.Mui-selected": {
-                  color: "primary.main", // highlight color
-                  fontWeight: "bold",
-                },
               }}
             />
           ))}
