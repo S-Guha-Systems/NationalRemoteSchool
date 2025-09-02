@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Home, MenuBook, Assignment, Person } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { getUserById, signOutUser } from "@/lib/Backend";
 import ScrollTop from "./ScrollToTop";
 import SignOutButton from "./SignOutButton";
@@ -23,6 +24,7 @@ const navItems = [
 ];
 
 const DashboardNavbar = () => {
+  const pathname = usePathname();
   const [dbUrl, setDbUrl] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -30,10 +32,14 @@ const DashboardNavbar = () => {
     severity: "info",
   });
 
+  // Track active tab
+  const activeIndex = navItems.findIndex((item) =>
+    pathname.startsWith(item.href)
+  );
+
   useEffect(() => {
     const verifyUser = async () => {
       let userId = localStorage.getItem("userId");
-      // If offline, just trust localStorage
       if (!navigator.onLine) {
         if (userId) {
           setSnackbar({
@@ -53,10 +59,8 @@ const DashboardNavbar = () => {
         }
       }
 
-      // If online, validate from backend
       if (userId) {
         const { data } = await getUserById(userId);
-        // console.log("User data from backend:", data);
         if (data) {
           setSnackbar({
             open: true,
@@ -82,8 +86,8 @@ const DashboardNavbar = () => {
         setTimeout(() => window.location.replace("/"), 2000);
       }
     };
-
     verifyUser();
+    setDbUrl(localStorage.getItem("userDbUrl") || "");
   }, []);
 
   const handleClose = (_, reason) => {
@@ -121,12 +125,10 @@ const DashboardNavbar = () => {
       >
         <BottomNavigation
           showLabels
-          sx={{
-            flex: "1 0 auto",
-            display: "flex",
-          }}
+          value={activeIndex === -1 ? 0 : activeIndex} // fallback to Home
+          sx={{ flex: "1 0 auto", display: "flex" }}
         >
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <BottomNavigationAction
               key={item.label}
               label={item.label}
@@ -136,11 +138,23 @@ const DashboardNavbar = () => {
               sx={{
                 minWidth: "80px",
                 flex: "0 0 auto",
+                "&.Mui-selected": {
+                  color: "primary.main", // highlight color
+                  fontWeight: "bold",
+                },
               }}
             />
           ))}
-          <ThemeTogglerBtn/>
-          <SignOutButton />
+          <BottomNavigationAction
+            label="Theme"
+            icon={<ThemeTogglerBtn />}
+            sx={{ minWidth: "80px", flex: "0 0 auto" }}
+          />
+          <BottomNavigationAction
+            label="Sign Out"
+            icon={<SignOutButton />}
+            sx={{ minWidth: "80px", flex: "0 0 auto" }}
+          />
         </BottomNavigation>
       </Box>
       <ScrollTop />

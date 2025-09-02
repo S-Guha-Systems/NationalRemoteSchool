@@ -7,13 +7,13 @@ export default function BookViewer({ bookName, bookUrl }) {
   return (
     <Box>
       {/* -- Header strip (optional) -- */}
-      <Box sx={{ p: 1.5 }}>
+      <Box>
         <Typography variant="subtitle1" noWrap title={bookName}>
           {bookName.toUpperCase()}
         </Typography>
       </Box>
       <object data={bookUrl} type="application/pdf" className="iframecss">
-        <iframe src={bookUrl} title={bookName} className="iframecss">
+        <iframe src={bookUrl} title={bookName}>
           <p>
             Your browser does not support PDFs. [Download the PDF](document.pdf)
           </p>

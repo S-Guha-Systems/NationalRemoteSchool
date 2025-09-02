@@ -12,9 +12,9 @@ body {
 }
 .iframecss {
   width: 100%;
-  height: 60vh;
-  border: 0;
-  background-color: transparent !important;
+  height: auto;
+  min-height: 80vh !important;
+  border: 0 !important;
 }
 /* .footer{
   background-color: #f8f8f8;
@@ -56,8 +56,8 @@ img {
   max-height: 200px;
 }
 .active {
-  color: orangered;
-  font-weight: bold;
+  color: orangered !important;
+  font-weight: bold !important;
 }
 h1,
 h2,

@@ -69,6 +69,7 @@ const Navbar = () => {
         name: data.name,
         email: data.email,
         photoURL: data.photoURL,
+        class: data?.class,
       });
       localStorage.setItem("userId", data.id);
       localStorage.setItem("userPic", data.photoURL);
@@ -92,13 +93,17 @@ const Navbar = () => {
     const userName = localStorage.getItem("userName");
     const userEmail = localStorage.getItem("userEmail");
     const userPic = localStorage.getItem("userPic");
+    const userClass = localStorage.getItem("userClass");
+    const userRole = localStorage.getItem("userRole");
 
-    if (userId && userName && userEmail && userPic) {
+    if (userId) {
       setUser({
         uid: userId,
         name: userName,
         email: userEmail,
         photoURL: userPic,
+        class: userClass,
+        role: userRole || "student",
       });
     }
   }, []);
@@ -221,6 +226,7 @@ const Navbar = () => {
             ))}
           </Box>
           <ThemeTogglerBtn />
+          &nbsp;&nbsp;
           {/* Account Section */}
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
@@ -247,12 +253,25 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Link
-                      href="/dashboard"
-                      className={pathname === "/dashboard" ? "active" : ""}
-                    >
-                      Dashboard
-                    </Link>
+                    {user.class ? (
+                      <Link
+                        href={`/dashboard/${user.role}/${user.class}`}
+                        className={
+                          pathname === `/dashboard/${user.role}/${user.class}`
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/dashboard"
+                        className={pathname === "/dashboard" ? "active" : ""}
+                      >
+                        Dashboard
+                      </Link>
+                    )}
                   </MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>
                     <SignOutButton />

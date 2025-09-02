@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useColorScheme } from "@mui/material/styles";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -27,16 +27,11 @@ const ThemeTogglerBtn = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 0, pr: 2 }}>
+    <Box sx={{ flexGrow: 0, cursor: "pointer" }}>
       <Tooltip title="Toggle Theme">
-        <IconButton
-          size="large"
-          color="inherit"
-          onClick={toggleTheme}
-          sx={{ p: 0 }}
-        >
+        <div size="large" color="inherit" onClick={toggleTheme} sx={{ p: 0 }}>
           {renderIcon()}
-        </IconButton>
+        </div>
       </Tooltip>
     </Box>
   );

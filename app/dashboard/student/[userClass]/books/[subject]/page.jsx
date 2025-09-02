@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function SingleBook({ params }) {
-  const { userClass, subject } = params;
+  const { userClass, subject } = await params; // ✅ await params
 
   const books = await fetchSingleBook(userClass, subject);
 
