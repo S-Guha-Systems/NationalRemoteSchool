@@ -21,7 +21,7 @@ export default function Dashboard() {
   useEffect(() => {
     const storedClass = localStorage.getItem("userClass");
     const storedRole = localStorage.getItem("userRole");
-    if (!storedClass && storedRole === "student") {
+    if (storedClass==="undefined" && storedRole === "student") {
       setShowForm(true);
     } else {
       setShowForm(false);
