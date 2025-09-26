@@ -30,10 +30,7 @@ const TermsOfUse = () => {
         </Typography>
         <Typography variant="body1">
           We operate the website:{" "}
-          <Link
-            href="https://nationalremoteschool.sguhasystems.com/"
-            target="_blank"
-          >
+          <Link href="https://nationalremoteschool.org" target="_blank">
             NRS
           </Link>
           (the "Site"), the mobile application <em>National Remote School</em>{" "}
@@ -887,7 +884,7 @@ const TermsOfUse = () => {
           <Typography variant="body1">
             We care about data privacy and security. Please review our Privacy
             Policy:
-            <Link href="https://nationalremoteschool.sguhasystems.com/privacy-policy">
+            <Link href="https://nationalremoteschool.orgprivacy-policy">
               {" "}
               Click to visit
             </Link>

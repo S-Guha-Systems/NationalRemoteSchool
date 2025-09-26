@@ -13,7 +13,7 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://nationalremoteschool.sguhasystems.com"),
+  metadataBase: new URL("https://nationalremoteschool.org"),
   title: {
     default: "National Remote School",
     template: "%s | National Remote School",
@@ -33,7 +33,7 @@ export const metadata = {
     title: "National Remote School – Free Online Education for Every Child",
     description:
       "National Remote School is an NGO initiative providing free online education up to 12th class. We believe in empowering children with knowledge by making learning accessible, inclusive, and cost-free.",
-    url: "https://nationalremoteschool.sguhasystems.com",
+    url: "https://nationalremoteschool.org",
     type: "website",
     locale: "en_US",
     siteName: "National Remote School",

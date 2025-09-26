@@ -147,7 +147,7 @@ const PrivacyPolicy = () => {
               <strong>Website</strong> refers to National Remote School&apos;s
               Website.{" "}
               <Link
-                href="https://nationalremoteschool.sguhasystems.com/"
+                href="https://nationalremoteschool.org"
                 target="_blank"
                 rel="noopener noreferrer"
                 underline="hover"
@@ -793,7 +793,7 @@ const PrivacyPolicy = () => {
             <Typography>
               By visiting contact page{" "}
               <Link
-                href="https://nationalremoteschool.sguhasystems.com/contact"
+                href="https://nationalremoteschool.orgcontact"
                 target="_blank"
                 rel="noopener noreferrer"
                 underline="hover"
