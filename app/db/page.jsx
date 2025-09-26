@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 
 // --- MUI Components (Conceptual Representation) ---
@@ -412,6 +411,92 @@ const BellIcon = (props) => (
 );
 
 // --- Data ---
+const curriculumData = {
+  englishMedium: {
+    classNursery: [],
+    classLKG: [],
+    classUKG: [],
+    class1: [],
+    class2: [],
+    class3: [],
+    class4: [],
+    class5: [],
+    class6: [],
+    class7: [],
+    class8: [],
+    class9: [],
+    class10: [],
+    class12: {
+      commerce: {
+        v1: {
+          name: "Accountancy + Business Studies + Economics + Mathematics + English",
+          subjects: [],
+        },
+        v2: {
+          name: "Accountancy + Business Studies + Economics + Informatics Practices + English",
+          subjects: [],
+        },
+        v3: {
+          name: "Accountancy + Business Studies + Economics + Entrepreneurship + English",
+          subjects: [],
+        },
+        v4: {
+          name: "Accountancy + Business Studies + Economics + Legal Studies + English",
+          subjects: [],
+        },
+        v5: {
+          name: "Accountancy + Business Studies + Economics + Physical Education + English",
+          subjects: [],
+        },
+      },
+      science: {
+        v1: {
+          name: "PCM: Physics + Chemistry + Mathematics + English + Computer Science",
+          subjects: [],
+        },
+        v2: {
+          name: "PCB: Physics + Chemistry + Biology + English + Physical Education",
+          subjects: [],
+        },
+        v3: {
+          name: "PCM + Bio: Physics + Chemistry + Mathematics + Biology + English",
+          subjects: [],
+        },
+        v4: {
+          name: "PCM + IP: Physics + Chemistry + Mathematics + English + Informatics Practices",
+          subjects: [],
+        },
+        v5: {
+          name: "PCB + Biotech: Physics + Chemistry + Biology + English + Biotechnology",
+          subjects: [],
+        },
+      },
+      arts: {
+        v1: {
+          name: "History + Political Science + Geography + English + Economics",
+          subjects: [],
+        },
+        v2: {
+          name: "Psychology + Sociology + Political Science + English + History",
+          subjects: [],
+        },
+        v3: {
+          name: "Geography + History + Political Science + English + Physical Education",
+          subjects: [],
+        },
+        v4: {
+          name: "Economics + Sociology + Political Science + English + Mathematics",
+          subjects: [],
+        },
+        v5: {
+          name: "History + Political Science + Sociology + English + Hindi",
+          subjects: [],
+        },
+      },
+    },
+  },
+};
+curriculumData.englishMedium.class11 = curriculumData.englishMedium.class12;
 const dummyData = {
   profile: {
     admissionNo: "12345",
@@ -526,19 +611,70 @@ const MUIHomePage = ({ setCurrentPage }) => (
 const MUIStudentSetupPage = ({ setStudentProfile }) => {
   const [name, setName] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
+  const [selectedMedium, setSelectedMedium] = useState("englishMedium");
+  const [selectedStream, setSelectedStream] = useState("");
+  const [selectedVariant, setSelectedVariant] = useState("");
+
+  const classes = [
+    { label: "Nursery", value: "classNursery" },
+    { label: "LKG", value: "classLKG" },
+    { label: "UKG", value: "classUKG" },
+    { label: "1", value: "class1" },
+    { label: "2", value: "class2" },
+    { label: "3", value: "class3" },
+    { label: "4", value: "class4" },
+    { label: "5", value: "class5" },
+    { label: "6", value: "class6" },
+    { label: "7", value: "class7" },
+    { label: "8", value: "class8" },
+    { label: "9", value: "class9" },
+    { label: "10", value: "class10" },
+    { label: "11", value: "class11" },
+    { label: "12", value: "class12" },
+  ];
+
+  const showStreamSelector =
+    selectedClass === "class11" || selectedClass === "class12";
+  const availableStreams =
+    showStreamSelector && curriculumData[selectedMedium]?.[selectedClass]
+      ? Object.keys(curriculumData[selectedMedium][selectedClass])
+      : [];
+  const availableVariants =
+    showStreamSelector &&
+    selectedStream &&
+    curriculumData[selectedMedium]?.[selectedClass]?.[selectedStream]
+      ? curriculumData[selectedMedium][selectedClass][selectedStream]
+      : null;
+
+  useEffect(() => {
+    setSelectedStream("");
+    setSelectedVariant("");
+  }, [selectedClass, selectedMedium]);
+  useEffect(() => {
+    setSelectedVariant("");
+  }, [selectedStream]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const profile = { name, class: selectedClass };
+    const profile = {
+      name,
+      class: selectedClass.replace("class", ""),
+      medium: selectedMedium,
+      stream: selectedStream,
+      variant: selectedVariant,
+    };
     if (name && selectedClass) {
+      if (showStreamSelector && (!selectedStream || !selectedVariant)) {
+        alert("Please select your stream and subject combination.");
+        return;
+      }
       localStorage.setItem("studentProfile", JSON.stringify(profile));
       setStudentProfile(profile);
+    } else {
+      alert("Please fill out all fields.");
     }
   };
-  const classes = [
-    { label: "Nursery", value: "Nursery" },
-    { label: "Class 5", value: "5" },
-    { label: "Class 12", value: "12" },
-  ];
+
   return (
     <Container
       sx={{
@@ -586,6 +722,44 @@ const MUIStudentSetupPage = ({ setStudentProfile }) => {
                 </MenuItem>
               ))}
             </Select>
+            {showStreamSelector && (
+              <>
+                <Select
+                  value={selectedStream}
+                  onChange={(e) => setSelectedStream(e.target.value)}
+                  required
+                >
+                  <MenuItem value="" disabled>
+                    Select your stream
+                  </MenuItem>
+                  {availableStreams.map((s) => (
+                    <MenuItem
+                      key={s}
+                      value={s}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      {s}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {availableVariants && (
+                  <Select
+                    value={selectedVariant}
+                    onChange={(e) => setSelectedVariant(e.target.value)}
+                    required
+                  >
+                    <MenuItem value="" disabled>
+                      Select a combination
+                    </MenuItem>
+                    {Object.entries(availableVariants).map(([key, variant]) => (
+                      <MenuItem key={key} value={key}>
+                        {variant.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </>
+            )}
             <Button type="submit" variant="contained" sx={{ padding: "12px" }}>
               Login to Dashboard
             </Button>
@@ -597,7 +771,6 @@ const MUIStudentSetupPage = ({ setStudentProfile }) => {
 };
 
 // --- REDESIGNED CAMPUSCARE-STYLE DASHBOARD ---
-
 const SidebarItem = ({ icon, label, active, onClick }) => (
   <Box
     onClick={onClick}
@@ -673,7 +846,6 @@ const DashboardHomeView = ({ studentProfile }) => {
         Dashboard
       </Typography>
       <Grid container spacing={3}>
-        {/* Profile Widget */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardHeader title="Student Profile" />
@@ -702,8 +874,6 @@ const DashboardHomeView = ({ studentProfile }) => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Attendance Widget */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardHeader title="Attendance" />
@@ -731,8 +901,6 @@ const DashboardHomeView = ({ studentProfile }) => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Fees Widget */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardHeader title="Fee Details" />
@@ -760,8 +928,6 @@ const DashboardHomeView = ({ studentProfile }) => {
             </CardContent>
           </Card>
         </Grid>
-
-        {/* Notice Board Widget */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: "100%" }}>
             <CardHeader title="Notice Board" />
