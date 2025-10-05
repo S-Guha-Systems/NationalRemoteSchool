@@ -24,7 +24,6 @@ import { Menu as MenuIcon, Google } from "@mui/icons-material";
 
 // Local imports
 import ThemeTogglerBtn from "./ThemeTogglerBtn";
-import DashboardNavbar from "./DashboardNavbar";
 import ScrollTop from "./ScrollToTop";
 import { signInUser } from "@/lib/Backend";
 import icon from "@/img/icon.png";
@@ -81,8 +80,12 @@ const Navbar = () => {
         "userDbUrl",
         `/dashboard/${data.role}/CLASS-${data.class}`
       );
-      if (data?.class) {
+      if (data?.class && data?.role === "student") {
         redirect(`/dashboard/${data.role}/CLASS-${data.class}`);
+      } else if (data?.role === "admin") {
+        redirect("/dashboard/admin");
+      } else if (data?.role === "teacher") {
+        redirect("/dashboard/teacher");
       } else {
         redirect("/dashboard");
       }
@@ -108,8 +111,7 @@ const Navbar = () => {
     }
   }, []);
   if (isDashboard) {
-    // render dashboard navbar immediately with no flash
-    return <DashboardNavbar />;
+    return null;
   }
 
   return (
@@ -253,13 +255,31 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
-                    {user.class ? (
+                    {user.role === "student" ? (
                       <Link
                         href={`/dashboard/${user.role}/${user.class}`}
                         className={
                           pathname === `/dashboard/${user.role}/${user.class}`
                             ? "active"
                             : ""
+                        }
+                      >
+                        Dashboard
+                      </Link>
+                    ) : user.role === "admin" ? (
+                      <Link
+                        href="/dashboard/admin"
+                        className={
+                          pathname === "/dashboard/admin" ? "active" : ""
+                        }
+                      >
+                        Dashboard
+                      </Link>
+                    ) : user.role === "teacher" ? (
+                      <Link
+                        href="/dashboard/teacher"
+                        className={
+                          pathname === "/dashboard/teacher" ? "active" : ""
                         }
                       >
                         Dashboard
@@ -273,6 +293,7 @@ const Navbar = () => {
                       </Link>
                     )}
                   </MenuItem>
+                  <MenuItem onClick={handleCloseUserMenu}></MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>
                     <SignOutButton />
                   </MenuItem>

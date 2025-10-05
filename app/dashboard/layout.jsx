@@ -2,10 +2,9 @@ import { Roboto } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import "@/components/globals.css";
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import AppThemeProvider from "@/context/AppThemeProvider";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import DashboardNavbar from "@/components/DashboardNavbar";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -15,7 +14,7 @@ const roboto = Roboto({
 export const metadata = {
   metadataBase: new URL("https://nationalremoteschool.org"),
   title: {
-    default: "National Remote School",
+    default: "Dashboard",
     template: "%s | National Remote School",
   },
   description:
@@ -53,11 +52,13 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider>
           <AppThemeProvider>
             <InitColorSchemeScript attribute="class" />
+            {/* Drawer + AppBar lives full-width above */}
+            <DashboardNavbar />
+            {/* Page content area */}
             <main>
               <Container maxWidth="xl">
-                <Navbar />
-                {children}
-                <Footer />
+                {/* Extra guard space so content never hides under AppBar on first paint */}
+                <Box sx={{ pt: 2 }}>{children}</Box>
               </Container>
             </main>
           </AppThemeProvider>
