@@ -52,13 +52,10 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider>
           <AppThemeProvider>
             <InitColorSchemeScript attribute="class" />
-            {/* Drawer + AppBar lives full-width above */}
-            <DashboardNavbar />
-            {/* Page content area */}
-            <main>
+            <main className="dashboard">
               <Container maxWidth="xl">
-                {/* Extra guard space so content never hides under AppBar on first paint */}
-                <Box sx={{ pt: 2 }}>{children}</Box>
+                <DashboardNavbar />
+                {children}
               </Container>
             </main>
           </AppThemeProvider>

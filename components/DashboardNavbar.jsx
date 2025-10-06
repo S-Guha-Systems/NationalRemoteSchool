@@ -55,7 +55,7 @@ const teacherNavItems = [
 ];
 const adminNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
-  { label: "Books", icon: <MenuBook />, href: "/books" },
+  { label: "Notes", icon: <MenuBook />, href: "/notes" },
   { label: "Exam", icon: <Assignment />, href: "/exam" },
   { label: "Profile", icon: <Person />, href: "/profile" },
 ];
@@ -165,26 +165,6 @@ export default function DashboardNavbar() {
     const verifyUser = async () => {
       try {
         const userId = localStorage.getItem("userId");
-
-        if (!navigator.onLine) {
-          if (userId) {
-            setSnackbar({
-              open: true,
-              message: "You are offline. Using saved data ⚡",
-              severity: "warning",
-            });
-            // Keep last-known role nav if you like. Falling back to studentNavItems otherwise.
-          } else {
-            setSnackbar({
-              open: true,
-              message: "No account found. Please sign in again 🥺",
-              severity: "error",
-            });
-            setTimeout(() => window.location.replace("/"), 2000);
-          }
-          return;
-        }
-
         if (!userId) {
           setSnackbar({
             open: true,
@@ -196,38 +176,47 @@ export default function DashboardNavbar() {
           return;
         }
 
-        const { data } = await getUserById(userId);
-        if (!data) {
+        if (!navigator.onLine) {
           setSnackbar({
             open: true,
-            message: "We couldn’t verify your account. Please sign in again 🥺",
-            severity: "error",
-          });
-          await signOutUser();
-          setTimeout(() => window.location.replace("/"), 2000);
-          return;
-        }
-
-        // Role-based nav (adjust role names as per your backend)
-        const role = (data.role || "").toLowerCase();
-        if (role.includes("admin")) setNavItems(adminNavItems);
-        else if (role.includes("teacher")) setNavItems(teacherNavItems);
-        else setNavItems(studentNavItems);
-
-        // Optional: verify path contains role segment
-        if (pathname && data.role && pathname.toLowerCase().includes(role)) {
-          setSnackbar({
-            open: true,
-            message: `Welcome back, ${data.name || "User"}! 🎉`,
-            severity: "success",
+            message: "You are offline. Using saved data ⚡",
+            severity: "warning",
           });
         } else {
-          // Still allow access but warn if mismatch
-          setSnackbar({
-            open: true,
-            message: `Welcome back, ${data.name || "User"}!`,
-            severity: "success",
-          });
+          const { data } = await getUserById(userId);
+          if (!data) {
+            setSnackbar({
+              open: true,
+              message:
+                "We couldn’t verify your account. Please sign in again 🥺",
+              severity: "error",
+            });
+            await signOutUser();
+            setTimeout(() => window.location.replace("/"), 2000);
+            return;
+          }
+
+          // Role-based nav (adjust role names as per your backend)
+          const role = (data.role || "").toLowerCase();
+          if (role.includes("admin")) setNavItems(adminNavItems);
+          else if (role.includes("teacher")) setNavItems(teacherNavItems);
+          else setNavItems(studentNavItems);
+
+          // Optional: verify path contains role segment
+          if (pathname && data.role && pathname.toLowerCase().includes(role)) {
+            setSnackbar({
+              open: true,
+              message: `Welcome back, ${data.name || "User"}! 🎉`,
+              severity: "success",
+            });
+          } else {
+            // Still allow access but warn if mismatch
+            setSnackbar({
+              open: true,
+              message: `Welcome back, ${data.name || "User"}!`,
+              severity: "success",
+            });
+          }
         }
       } catch {
         setSnackbar({
@@ -237,7 +226,6 @@ export default function DashboardNavbar() {
         });
       }
     };
-
     setDbUrl(localStorage.getItem("userDbUrl") || "");
     verifyUser();
   }, [pathname]);
