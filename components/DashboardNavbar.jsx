@@ -56,26 +56,6 @@ import {
   FreeCancellation,
 } from "@mui/icons-material";
 
-const studentNavItems = [
-  { label: "Home", icon: <Home />, href: "/" },
-  { label: "My Subjects", icon: <MenuBook />, href: "/subjects" },
-  { label: "Live Classes", icon: <Laptop />, href: "/live-classes" },
-  { label: "Calendar", icon: <CalendarMonth />, href: "/calendar" },
-  { label: "Performance", icon: <AutoGraph />, href: "/performance" },
-  { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
-  { label: "Profile", icon: <Person />, href: "/profile" },
-];
-const teacherNavItems = [
-  { label: "Home", icon: <Home />, href: "/" },
-  { label: "Books", icon: <MenuBook />, href: "/books" },
-];
-const adminNavItems = [
-  { label: "Home", icon: <Home />, href: "/" },
-  { label: "Notes", icon: <MenuBook />, href: "/notes" },
-  { label: "Exam", icon: <Assignment />, href: "/exam" },
-  { label: "Profile", icon: <Person />, href: "/profile" },
-];
-
 // ---------------- Mini Drawer styles (MUI v6 variants) ----------------
 const drawerWidth = 240;
 
@@ -156,6 +136,78 @@ const Drawer = styled(MuiDrawer, {
   ],
 }));
 
+// ---- Small helpers (keep comments) ----
+
+// Save last known user in localStorage so we can work offline
+const saveLastKnownUser = (user) => {
+  try {
+    localStorage.setItem("lastKnownUser", JSON.stringify(user || null));
+  } catch {}
+};
+
+const readLastKnownUser = () => {
+  try {
+    const raw = localStorage.getItem("lastKnownUser");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+// Decide nav items by role string
+const navByRole = (role = "") => {
+  const r = String(role || "").toLowerCase();
+  if (r.includes("admin")) return "admin";
+  if (r.includes("teacher")) return "teacher";
+  return "student";
+};
+
+// Role-based nav definitions (same items you had)
+const studentNavItems = [
+  { label: "Home", icon: <Home />, href: "/" },
+  { label: "My Subjects", icon: <MenuBook />, href: "/subjects" },
+  { label: "Live Classes", icon: <Laptop />, href: "/live-classes" },
+  { label: "Calendar", icon: <CalendarMonth />, href: "/calendar" },
+  { label: "Performance", icon: <AutoGraph />, href: "/performance" },
+  { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
+  { label: "Profile", icon: <Person />, href: "/profile" },
+];
+const teacherNavItems = [
+  { label: "Home", icon: <Home />, href: "/" },
+  { label: "Books", icon: <MenuBook />, href: "/books" },
+];
+const adminNavItems = [
+  { label: "Home", icon: <Home />, href: "/" },
+  { label: "Notes", icon: <MenuBook />, href: "/notes" },
+  { label: "Exam", icon: <Assignment />, href: "/exam" },
+  { label: "Profile", icon: <Person />, href: "/profile" },
+];
+
+// Map roleKey -> items
+const roleNavMap = {
+  admin: adminNavItems,
+  teacher: teacherNavItems,
+  student: studentNavItems,
+};
+
+// Try to fetch user; return { ok, data, status } without throwing
+const safeGetUser = async (userId) => {
+  try {
+    const { data } = await getUserById(userId);
+    return { ok: !!data, data: data || null, status: 200 };
+  } catch (err) {
+    // Try to derive an HTTP-ish status; adapt based on your fetch layer
+    const status =
+      err?.status ||
+      err?.response?.status ||
+      (typeof err?.message === "string" && /401|403|404/.test(err.message)
+        ? Number(RegExp.$1)
+        : 0);
+
+    return { ok: false, data: null, status: Number(status) || 0 };
+  }
+};
+
 export default function DashboardNavbar() {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
@@ -182,63 +234,103 @@ export default function DashboardNavbar() {
   // ---- Verify user (online/offline), choose role nav, greet ----
   React.useEffect(() => {
     const verifyUser = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) {
-          setSnackbar({
-            open: true,
-            message: "We couldn’t verify your account. Please sign in again 🥺",
-            severity: "error",
-          });
-          await signOutUser();
-          setTimeout(() => window.location.replace("/"), 2000);
-          return;
-        }
+      const userId = localStorage.getItem("userId");
+      setDbUrl(localStorage.getItem("userDbUrl") || "");
 
-        if (!navigator.onLine) {
-          setSnackbar({
-            open: true,
-            message: "You are offline. Using saved data ⚡",
-            severity: "warning",
-          });
-        } else {
-          const { data } = await getUserById(userId);
-          if (!data) {
-            setSnackbar({
-              open: true,
-              message:
-                "We couldn’t verify your account. Please sign in again 🥺",
-              severity: "error",
-            });
-            await signOutUser();
-            setTimeout(() => window.location.replace("/"), 2000);
-            return;
-          }
-
-          // Role-based nav (adjust role names as per your backend)
-          const role = (data.role || "").toLowerCase();
-          if (role.includes("admin")) setNavItems(adminNavItems);
-          else if (role.includes("teacher")) setNavItems(teacherNavItems);
-          else setNavItems(studentNavItems);
-
-          // Optional: greet user
-          setSnackbar({
-            open: true,
-            message: `Welcome back, ${data.name || "User"}! 🎉`,
-            severity: "success",
-          });
-        }
-      } catch {
+      // If truly no userId, we must sign out.
+      if (!userId) {
         setSnackbar({
           open: true,
           message: "We couldn’t verify your account. Please sign in again 🥺",
           severity: "error",
         });
+        await signOutUser();
+        setTimeout(() => window.location.replace("/"), 1200);
+        return;
       }
+
+      // Attempt to use cached user immediately for UX (works offline)
+      const cached = readLastKnownUser();
+      if (cached?.role) {
+        const roleKey = navByRole(cached.role);
+        setNavItems(roleNavMap[roleKey] || roleNavMap.student);
+      }
+
+      // If browser reports offline, just show offline message and stop here.
+      if (!navigator.onLine) {
+        setSnackbar({
+          open: true,
+          message: "You’re offline. Using saved data ⚡",
+          severity: "warning",
+        });
+        return;
+      }
+
+      // We appear online — try to verify from server
+      const res = await safeGetUser(userId);
+
+      // Positive invalidation (online + 401/403/404) -> sign out
+      if (!res.ok && [401, 403, 404].includes(res.status)) {
+        setSnackbar({
+          open: true,
+          message:
+            "Session expired or account not found. Please sign in again.",
+          severity: "error",
+        });
+        await signOutUser();
+        setTimeout(() => window.location.replace("/"), 1200);
+        return;
+      }
+
+      // Network failure / server unreachable -> keep cached user, no signout
+      if (!res.ok && ![401, 403, 404].includes(res.status)) {
+        setSnackbar({
+          open: true,
+          message: "Server unreachable. Working with saved data for now ⚡",
+          severity: "warning",
+        });
+        return;
+      }
+
+      // Verified user online
+      const data = res.data; // guaranteed by res.ok
+      saveLastKnownUser({ id: data.id, name: data.name, role: data.role });
+
+      const roleKey = navByRole(data.role);
+      setNavItems(roleNavMap[roleKey] || roleNavMap.student);
+
+      setSnackbar({
+        open: true,
+        message: `Welcome back, ${data.name || "User"}! 🎉`,
+        severity: "success",
+      });
     };
-    setDbUrl(localStorage.getItem("userDbUrl") || "");
+
     verifyUser();
   }, [pathname]);
+
+  // Keep UI in sync with connectivity and inform user
+  React.useEffect(() => {
+    const onOffline = () =>
+      setSnackbar({
+        open: true,
+        message: "You went offline. Using saved data ⚡",
+        severity: "warning",
+      });
+    const onOnline = () =>
+      setSnackbar({
+        open: true,
+        message: "Back online. Syncing…",
+        severity: "info",
+      });
+
+    window.addEventListener("offline", onOffline);
+    window.addEventListener("online", onOnline);
+    return () => {
+      window.removeEventListener("offline", onOffline);
+      window.removeEventListener("online", onOnline);
+    };
+  }, []);
 
   const handleClose = (_, reason) => {
     if (reason === "clickaway") return;
@@ -300,7 +392,9 @@ export default function DashboardNavbar() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="warning" onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button color="warning" onClick={() => setConfirmOpen(false)}>
+            Cancel
+          </Button>
           <Button color="error" variant="contained" onClick={handleSignOut}>
             Yes, Sign Out
           </Button>
