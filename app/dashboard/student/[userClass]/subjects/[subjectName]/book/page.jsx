@@ -20,7 +20,8 @@ export default function BookViewer() {
   const parts = pathname.split("/").filter(Boolean);
   const className = parts[2] || "CLASS-1";
   const subjectRaw = parts[4] || "English";
-  const subject = decodeURIComponent(subjectRaw).toUpperCase();
+  const subject = decodeURIComponent(subjectRaw);
+  // console.log("Class:", className, "Subject:", subject);
 
   // ---------- FIND SUBJECT END PAGE NUMBER FROM NcertSubjects ----------
   const classData = NcertSubjects.find((item) => item.class === className);

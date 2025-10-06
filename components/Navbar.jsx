@@ -293,7 +293,6 @@ const Navbar = () => {
                       </Link>
                     )}
                   </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}></MenuItem>
                   <MenuItem onClick={handleCloseUserMenu}>
                     <SignOutButton />
                   </MenuItem>
