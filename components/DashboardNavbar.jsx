@@ -31,6 +31,12 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -39,19 +45,29 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 // ---- Icons for nav items ----
-import { Home, MenuBook, Assignment, Person } from "@mui/icons-material";
+import {
+  Home,
+  MenuBook,
+  Assignment,
+  Person,
+  Laptop,
+  CalendarMonth,
+  AutoGraph,
+  FreeCancellation,
+} from "@mui/icons-material";
 
 const studentNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
-  { label: "Books", icon: <MenuBook />, href: "/books" },
-  { label: "Exam", icon: <Assignment />, href: "/exam" },
+  { label: "My Subjects", icon: <MenuBook />, href: "/subjects" },
+  { label: "Live Classes", icon: <Laptop />, href: "/live-classes" },
+  { label: "Calendar", icon: <CalendarMonth />, href: "/calendar" },
+  { label: "Performance", icon: <AutoGraph />, href: "/performance" },
+  { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
   { label: "Profile", icon: <Person />, href: "/profile" },
 ];
 const teacherNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
   { label: "Books", icon: <MenuBook />, href: "/books" },
-  { label: "Exam", icon: <Assignment />, href: "/exam" },
-  { label: "Profile", icon: <Person />, href: "/profile" },
 ];
 const adminNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
@@ -160,6 +176,9 @@ export default function DashboardNavbar() {
     severity: "info",
   });
 
+  // ---- Confirmation dialog ----
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
+
   // ---- Verify user (online/offline), choose role nav, greet ----
   React.useEffect(() => {
     const verifyUser = async () => {
@@ -202,21 +221,12 @@ export default function DashboardNavbar() {
           else if (role.includes("teacher")) setNavItems(teacherNavItems);
           else setNavItems(studentNavItems);
 
-          // Optional: verify path contains role segment
-          if (pathname && data.role && pathname.toLowerCase().includes(role)) {
-            setSnackbar({
-              open: true,
-              message: `Welcome back, ${data.name || "User"}! 🎉`,
-              severity: "success",
-            });
-          } else {
-            // Still allow access but warn if mismatch
-            setSnackbar({
-              open: true,
-              message: `Welcome back, ${data.name || "User"}!`,
-              severity: "success",
-            });
-          }
+          // Optional: greet user
+          setSnackbar({
+            open: true,
+            message: `Welcome back, ${data.name || "User"}! 🎉`,
+            severity: "success",
+          });
         }
       } catch {
         setSnackbar({
@@ -240,15 +250,19 @@ export default function DashboardNavbar() {
 
   // Active matcher for highlighting
   const isActive = (to) => {
-    // Remove dbUrl prefix for pathname compare; pathname is framework-relative
-    // When dbUrl is non-empty, href uses `${dbUrl}${to}` for Link.
-    // We'll check only the path part.
     try {
       const target = new URL(`${dbUrl || ""}${to}`, "http://dummy").pathname;
       return pathname === target || pathname?.startsWith(`${target}/`);
     } catch {
       return pathname === to || pathname?.startsWith(`${to}/`);
     }
+  };
+
+  // ---- Handle sign out confirm ----
+  const handleSignOut = async () => {
+    setConfirmOpen(false);
+    await signOutUser();
+    window.location.replace("/");
   };
 
   return (
@@ -271,6 +285,27 @@ export default function DashboardNavbar() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        aria-labelledby="signout-confirm-title"
+      >
+        <DialogTitle id="signout-confirm-title">Confirm Sign Out</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to sign out? You’ll need to sign in again to
+            access your dashboard.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="warning" onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={handleSignOut}>
+            Yes, Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* AppBar */}
       <AppBar position="fixed" open={open}>
@@ -371,7 +406,7 @@ export default function DashboardNavbar() {
                 <ThemeTogglerBtn />
               </ListItemIcon>
               <ListItemText
-                primary="Theme"
+                primary="Set Theme"
                 sx={[open ? { opacity: 1 } : { opacity: 0 }]}
               />
             </ListItemButton>
@@ -379,10 +414,7 @@ export default function DashboardNavbar() {
 
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              onClick={async () => {
-                await signOutUser();
-                window.location.replace("/");
-              }}
+              onClick={() => setConfirmOpen(true)} // open confirmation dialog
               sx={[
                 { minHeight: 48, px: 2.5 },
                 open
@@ -396,7 +428,6 @@ export default function DashboardNavbar() {
                   open ? { mr: 3 } : { mr: "auto" },
                 ]}
               >
-                {/* Reuse your existing SignOutButton so visuals remain consistent */}
                 <SignOutButton />
               </ListItemIcon>
               <ListItemText
@@ -408,9 +439,9 @@ export default function DashboardNavbar() {
         </List>
       </Drawer>
 
-      {/* Spacer only (no content here). Your pages render after this component. */}
+      {/* Spacer only */}
       <Box sx={{ flexGrow: 1 }}>
-        <Toolbar /> {/* creates top offset for the fixed AppBar */}
+        <Toolbar />
       </Box>
 
       <ScrollTop />
