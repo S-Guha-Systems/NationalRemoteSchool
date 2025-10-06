@@ -1,5 +1,7 @@
 "use client";
 
+// NOTE: Keep comments; user prefers not to delete them
+
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import {
@@ -21,7 +23,6 @@ export default function BookViewer() {
   const className = parts[2] || "CLASS-1";
   const subjectRaw = parts[4] || "English";
   const subject = decodeURIComponent(subjectRaw);
-  // console.log("Class:", className, "Subject:", subject);
 
   // ---------- FIND SUBJECT END PAGE NUMBER FROM NcertSubjects ----------
   const classData = NcertSubjects.find((item) => item.class === className);
@@ -30,10 +31,29 @@ export default function BookViewer() {
   const end = classData?.subjectsEndPageNo?.[subject] ?? 100; // fallback default if missing
   const start = 0;
 
-  // ---------- GENERATE IMAGE URLS ----------
+  // ---------- HELPERS TO MATCH YOUR DISK STRUCTURE ----------
+  // Folder is "Class-1", not "CLASS-1"
+  const toClassFolder = (c) =>
+    String(c)
+      .replace(/^class-/i, "Class-")
+      .replace(/^CLASS-/i, "Class-");
+
+  // Subject folder is TitleCase ("English"), file base is UPPER_SNAKE ("ENGLISH")
+  const toTitleCase = (s) =>
+    String(s)
+      .toLowerCase()
+      .replace(/\b\w/g, (ch) => ch.toUpperCase());
+  const toUpperSnake = (s) =>
+    String(s).trim().replace(/\s+/g, "_").toUpperCase();
+
+  const folderClass = toClassFolder(className); // e.g., Class-1
+  const folderSubject = toTitleCase(subject); // e.g., English
+  const fileBase = toUpperSnake(subject); // e.g., ENGLISH
+
+  // ---------- GENERATE IMAGE URLS (MATCHING YOUR FOLDERS/FILES) ----------
   const images = Array.from({ length: end - start + 1 }, (_, i) => {
-    const num = String(start + i).padStart(2, "0");
-    return `/Books/${className}/${subject}/${subject.toUpperCase()}_${num}.png`;
+    const num = String(start + i).padStart(2, "0"); // ENGLISH_00.png, ENGLISH_01.png, ...
+    return `/Books/${folderClass}/${folderSubject}/${fileBase}_${num}.png`;
   });
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -49,6 +69,8 @@ export default function BookViewer() {
           <Image
             width={1000}
             height={1000}
+            // If your host can't run the optimizer, uncomment the next line:
+            // unoptimized
             src={images[activeStep]}
             alt={`${subject} page ${activeStep + 1}`}
             className="bookImage"
