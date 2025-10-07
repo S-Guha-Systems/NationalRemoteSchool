@@ -50,9 +50,7 @@ import {
   MenuBook,
   Assignment,
   Person,
-  Laptop,
   CalendarMonth,
-  AutoGraph,
   FreeCancellation,
   Science,
   EmojiEvents,
@@ -174,7 +172,7 @@ const studentNavItems = [
   { label: "Virtual Labs", icon: <Science />, href: "/virtual-labs" },
   { label: "Exam Portal", icon: <HourglassBottom />, href: "/exam-portal" },
   { label: "Achievements", icon: <EmojiEvents />, href: "/achievements" },
-  { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
+  // { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
   { label: "Profile", icon: <Person />, href: "/profile" },
 ];
 const teacherNavItems = [
@@ -304,11 +302,11 @@ export default function DashboardNavbar() {
       const roleKey = navByRole(data.role);
       setNavItems(roleNavMap[roleKey] || roleNavMap.student);
 
-      setSnackbar({
-        open: true,
-        message: `Welcome back, ${data.name || "User"}! 🎉`,
-        severity: "success",
-      });
+      // setSnackbar({
+      //   open: true,
+      //   message: `Welcome back, ${data.name || "User"}! 🎉`,
+      //   severity: "success",
+      // });
     };
 
     verifyUser();
