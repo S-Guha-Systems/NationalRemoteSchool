@@ -54,6 +54,9 @@ import {
   CalendarMonth,
   AutoGraph,
   FreeCancellation,
+  Science,
+  EmojiEvents,
+  HourglassBottom,
 } from "@mui/icons-material";
 
 // ---------------- Mini Drawer styles (MUI v6 variants) ----------------
@@ -166,9 +169,11 @@ const navByRole = (role = "") => {
 const studentNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
   { label: "My Subjects", icon: <MenuBook />, href: "/subjects" },
-  { label: "Live Classes", icon: <Laptop />, href: "/live-classes" },
-  { label: "Calendar", icon: <CalendarMonth />, href: "/calendar" },
-  { label: "Performance", icon: <AutoGraph />, href: "/performance" },
+  // { label: "Live Classes", icon: <Laptop />, href: "/live-classes" },
+  { label: "Schedule", icon: <CalendarMonth />, href: "/schedule" },
+  { label: "Virtual Labs", icon: <Science />, href: "/virtual-labs" },
+  { label: "Exam Portal", icon: <HourglassBottom />, href: "/exam-portal" },
+  { label: "Achievements", icon: <EmojiEvents />, href: "/achievements" },
   { label: "Attendance", icon: <FreeCancellation />, href: "/attendance" },
   { label: "Profile", icon: <Person />, href: "/profile" },
 ];
