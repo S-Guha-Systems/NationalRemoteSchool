@@ -6,6 +6,7 @@ import { Container } from "@mui/material";
 import AppThemeProvider from "@/context/AppThemeProvider";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import GoogleTranslateLoader from "@/components/GoogleTranslateLoader";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
             <main>
               <Container maxWidth="xl">
                 <Navbar />
+                <GoogleTranslateLoader/>
                 {children}
                 <Footer />
               </Container>

@@ -28,7 +28,7 @@ import ScrollTop from "./ScrollToTop";
 import { signInUser } from "@/lib/Backend";
 import icon from "@/img/icon.png";
 import SignOutButton from "./SignOutButton";
-import Translator from "./Translator";
+import TranslatorDropdown from "./TranslatorDropdown";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -230,8 +230,8 @@ const Navbar = () => {
           </Box>
           <ThemeTogglerBtn />
           &nbsp;&nbsp;
-          {/* <Translator />
-          &nbsp;&nbsp; */}
+          <TranslatorDropdown />
+          &nbsp;&nbsp;
           {/* Account Section */}
           <Box sx={{ flexGrow: 0 }}>
             {user ? (

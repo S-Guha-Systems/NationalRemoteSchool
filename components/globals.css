@@ -2,6 +2,37 @@
 body {
   overflow-x: hidden !important;
 }
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.VIpgJd-ZVi9od-ORHb-OEVmcd{
+  display: none !important;
+}
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+.goog-te-gadget {
+  color: transparent !important;
+}
+/* globals.css */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+.goog-te-gadget {
+  color: transparent !important;
+}
+
 /* .terms {
   text-align: justify !important;
 } */
