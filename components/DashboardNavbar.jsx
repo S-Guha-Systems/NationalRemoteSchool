@@ -55,6 +55,8 @@ import {
   Science,
   EmojiEvents,
   HourglassBottom,
+  Group,
+  Summarize,
 } from "@mui/icons-material";
 
 // ---------------- Mini Drawer styles (MUI v6 variants) ----------------
@@ -177,7 +179,11 @@ const studentNavItems = [
 ];
 const teacherNavItems = [
   { label: "Home", icon: <Home />, href: "/" },
-  { label: "Books", icon: <MenuBook />, href: "/books" },
+  { label: "Overview", icon: <Summarize />, href: "/overview" },
+  { label: "Students", icon: <Group />, href: "/students" },
+  { label: "Schedule", icon: <CalendarMonth />, href: "/schedule" },
+  { label: "Exams", icon: <HourglassBottom />, href: "/exams" },
+  { label: "Profile", icon: <Person />, href: "/profile" },
 ];
 const adminNavItems = [
   { label: "Home", icon: <Home />, href: "/" },

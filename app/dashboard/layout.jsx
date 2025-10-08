@@ -14,7 +14,7 @@ const roboto = Roboto({
 export const metadata = {
   metadataBase: new URL("https://nationalremoteschool.org"),
   title: {
-    default: "Dashboard",
+    default: "Teacher Dashboard",
     template: "%s | National Remote School",
   },
   description:
