@@ -491,29 +491,11 @@ export default function DashboardNavbar() {
 
         {/* Bottom actions (Theme / Sign Out) */}
         <List sx={{ pt: 0 }}>
-          <ListItem disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={[
-                { minHeight: 48, px: 2.5 },
-                open
-                  ? { justifyContent: "initial" }
-                  : { justifyContent: "center" },
-              ]}
-            >
-              <ListItemIcon
-                sx={[
-                  { minWidth: 0, justifyContent: "center" },
-                  open ? { mr: 3 } : { mr: "auto" },
-                ]}
-              >
-                <ThemeTogglerBtn />
-              </ListItemIcon>
-              <ListItemText
-                primary="Set Theme"
-                sx={[open ? { opacity: 1 } : { opacity: 0 }]}
-              />
-            </ListItemButton>
-          </ListItem>
+          <center>
+            <ListItem sx={{ alignItems: "center" }}>
+              <ThemeTogglerBtn />
+            </ListItem>
+          </center>
 
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton

@@ -24,6 +24,7 @@ import {
 } from "@mui/material";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useTheme } from "@mui/material/styles";
+import Link from "next/link";
 
 // ---- Demo events (replace with your data source) ----
 const EVENTS = [
@@ -345,6 +346,11 @@ export default function Schedule() {
                           {e.time?.toLowerCase().includes("all day") && (
                             <Chip size="small" label="All Day" />
                           )}
+                          <Box sx={{display:"flex" ,marginLeft:"auto" }}>
+                            <Link href="#">
+                              <Button size="small" variant="contained" color="success">Join</Button>
+                            </Link>
+                          </Box>
                         </Stack>
                       }
                       secondary={

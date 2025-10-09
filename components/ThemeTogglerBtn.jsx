@@ -6,9 +6,19 @@ import { useColorScheme } from "@mui/material/styles";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import LaptopMacOutlinedIcon from "@mui/icons-material/LaptopMacOutlined";
+import { usePathname } from "next/navigation";
 
 const ThemeTogglerBtn = () => {
   const { mode, setMode } = useColorScheme();
+  const pathname = usePathname();
+  const [show, setShow] = React.useState(false);
+  React.useEffect(() => {
+    if (pathname === "/dashboard") {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [pathname]);
 
   const toggleTheme = React.useCallback(() => {
     if (mode === "light") {
@@ -27,7 +37,7 @@ const ThemeTogglerBtn = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 0, cursor: "pointer" }}>
+    <Box sx={{ flexGrow: 0, cursor: "pointer", alignItems: "center" }}>
       <Tooltip title="Toggle Theme">
         <div size="large" color="inherit" onClick={toggleTheme} sx={{ p: 0 }}>
           {renderIcon()}

@@ -8,7 +8,7 @@ body {
 body {
   top: 0px !important;
 }
-.VIpgJd-ZVi9od-ORHb-OEVmcd{
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
   display: none !important;
 }
 .goog-logo-link,
@@ -58,6 +58,7 @@ body {
 } */
 .dashboard {
   margin-top: 1.5rem;
+  margin-left: 1.6rem;
 }
 .counter {
   font-size: 2rem;
